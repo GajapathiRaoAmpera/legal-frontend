@@ -12,6 +12,15 @@ import { server } from "./server";
 
 expect.extend(matchers);
 
+// jsdom's AbortSignal fails Node's Request brand check, and the data router builds a Request per navigation.
+// shortcut: drops abort signals in tests; remove once vitest's jsdom env shares Node's AbortSignal.
+const NodeRequest = globalThis.Request;
+globalThis.Request = class extends NodeRequest {
+  constructor(input: RequestInfo | URL, init?: RequestInit) {
+    super(input, init && { ...init, signal: null });
+  }
+};
+
 // jsdom gaps
 class RO {
   observe() {}

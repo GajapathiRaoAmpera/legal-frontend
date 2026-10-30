@@ -2,7 +2,8 @@ import type { ReactElement } from "react";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { render } from "@testing-library/react";
-import { createMemoryRouter, RouterProvider } from "react-router-dom";
+import { createMemoryRouter, RouterProvider, type RouteObject } from "react-router-dom";
+import { routes } from "@/app/router";
 import { session } from "@/auth/session";
 import { Toaster } from "@/components/ui/Toaster";
 import { fakeJwt, USERS } from "./handlers";
@@ -18,14 +19,20 @@ export function renderWithProviders(
     route = "/",
     path = "/",
     user = "rita",
-  }: { route?: string; path?: string; user?: keyof typeof USERS | null } = {},
+    routes: appRoutes,
+  }: {
+    route?: string;
+    path?: string;
+    user?: keyof typeof USERS | null;
+    routes?: RouteObject[];
+  } = {},
 ) {
   loginAs(user);
   const qc = new QueryClient({
     defaultOptions: { queries: { retry: false, gcTime: Infinity }, mutations: { retry: false } },
   });
   const router = createMemoryRouter(
-    [
+    appRoutes ?? [
       { path, element: ui },
       { path: "*", element: <p>Elsewhere</p> },
     ],
@@ -42,4 +49,9 @@ export function renderWithProviders(
     </QueryClientProvider>,
   );
   return { ...utils, qc, router };
+}
+
+/** The whole app (shell, layouts, lazy routes) at `route`, signed in as `user`. */
+export function renderApp(route: string, user: keyof typeof USERS | null = "rita") {
+  return renderWithProviders(<></>, { user, route, routes });
 }
