@@ -1,0 +1,240 @@
+/* Design tokens: the ONLY file allowed to contain color literals (ADR-0003). Color block copied verbatim from docs/DESIGN_SYSTEM.md §3.4. */
+/* tokens:begin */
+:root {
+  /* ---------- primitives (never referenced by components) ---------- */
+  --neutral-0: #ffffff;
+  --neutral-25: #f8fafc;
+  --neutral-50: #f1f5f9;
+  --neutral-100: #e2e8f0;
+  --neutral-200: #cbd5e1;
+  --neutral-400: #94a3b8;
+  --neutral-450: #8494ab;
+  --neutral-500: #6b7c93;
+  --neutral-550: #64748b;
+  --neutral-600: #56657a;
+  --neutral-700: #475569;
+  --neutral-800: #273449;
+  --neutral-850: #1e2a44;
+  --neutral-875: #18233a;
+  --neutral-900: #111a2b;
+  --neutral-925: #0e1626;
+  --neutral-950: #0b1220;
+  --ink-900: #0f172a;
+
+  --navy-100: #dbe6ff;
+  --navy-300: #b4cbff;
+  --navy-350: #93b4ff;
+  --navy-400: #7ea6ff;
+  --navy-600: #2563eb;
+  --navy-700: #1d4ed8;
+  --navy-800: #1e40af;
+  --navy-900: #1e3a8a;
+  --navy-950: #23396b;
+
+  --red-50: #fef3f2;
+  --red-100: #fde3e1;
+  --red-300: #fda29b;
+  --red-700: #b42318;
+  --red-900: #4a1d20;
+  --red-950: #3b1518;
+
+  --amber-50: #fffaeb;
+  --amber-100: #fef0c7;
+  --amber-300: #fec84b;
+  --amber-800: #93370d;
+  --amber-900: #3f2e0d;
+  --amber-950: #33250b;
+
+  --green-50: #ecfdf3;
+  --green-100: #dcfae6;
+  --green-300: #75e0a7;
+  --green-800: #05603a;
+  --green-900: #113826;
+  --green-950: #0d2e20;
+
+  /* ---------- semantic: light ---------- */
+  color-scheme: light;
+  --color-bg-canvas: var(--neutral-25);
+  --color-bg-surface: var(--neutral-0);
+  --color-bg-sunken: var(--neutral-50);
+  --color-bg-raised: var(--neutral-0);
+  --color-bg-overlay: var(--neutral-0);
+  --color-scrim: rgb(15 23 42 / 0.45);
+
+  --color-fg-default: var(--ink-900);
+  --color-fg-muted: var(--neutral-700);
+  --color-fg-subtle: var(--neutral-600);
+  --color-fg-link: var(--navy-700);
+  --color-fg-on-primary: var(--neutral-0);
+  --color-fg-on-danger: var(--neutral-0);
+
+  --color-border-default: var(--neutral-200);
+  --color-border-strong: var(--neutral-550);
+
+  --color-primary: var(--navy-900);
+  --color-primary-hover: var(--navy-800);
+  --color-danger: var(--red-700);
+  --color-focus-ring: var(--navy-600);
+
+  --color-risk-high-fg: var(--red-700);
+  --color-risk-high-bg: var(--red-50);
+  --color-risk-high-mark: var(--red-100);
+  --color-risk-medium-fg: var(--amber-800);
+  --color-risk-medium-bg: var(--amber-50);
+  --color-risk-medium-mark: var(--amber-100);
+  --color-risk-low-fg: var(--green-800);
+  --color-risk-low-bg: var(--green-50);
+  --color-risk-low-mark: var(--green-100);
+
+  --color-diff-ins-fg: var(--green-800);
+  --color-diff-ins-bg: var(--green-100);
+  --color-diff-del-fg: var(--red-700);
+  --color-diff-del-bg: var(--red-100);
+  --color-search-match-bg: var(--navy-100);
+
+  --shadow-1: 0 1px 2px rgb(15 23 42 / 0.06);
+  --shadow-2: 0 4px 12px rgb(15 23 42 / 0.1);
+  --shadow-3: 0 12px 32px rgb(15 23 42 / 0.18);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg-canvas: var(--neutral-950);
+  --color-bg-surface: var(--neutral-900);
+  --color-bg-sunken: var(--neutral-925);
+  --color-bg-raised: var(--neutral-875);
+  --color-bg-overlay: var(--neutral-850);
+  --color-scrim: rgb(0 0 0 / 0.6);
+
+  --color-fg-default: var(--neutral-100);
+  --color-fg-muted: var(--neutral-400);
+  --color-fg-subtle: var(--neutral-450);
+  --color-fg-link: var(--navy-350);
+  --color-fg-on-primary: var(--neutral-950);
+  --color-fg-on-danger: var(--neutral-950);
+
+  --color-border-default: var(--neutral-800);
+  --color-border-strong: var(--neutral-500);
+
+  --color-primary: var(--navy-350);
+  --color-primary-hover: var(--navy-300);
+  --color-danger: var(--red-300);
+  --color-focus-ring: var(--navy-400);
+
+  --color-risk-high-fg: var(--red-300);
+  --color-risk-high-bg: var(--red-950);
+  --color-risk-high-mark: var(--red-900);
+  --color-risk-medium-fg: var(--amber-300);
+  --color-risk-medium-bg: var(--amber-950);
+  --color-risk-medium-mark: var(--amber-900);
+  --color-risk-low-fg: var(--green-300);
+  --color-risk-low-bg: var(--green-950);
+  --color-risk-low-mark: var(--green-900);
+
+  --color-diff-ins-fg: var(--green-300);
+  --color-diff-ins-bg: var(--green-900);
+  --color-diff-del-fg: var(--red-300);
+  --color-diff-del-bg: var(--red-900);
+  --color-search-match-bg: var(--navy-950);
+
+  /* dark elevation = lighter surface + border; shadows only for separation */
+  --shadow-1: 0 0 0 1px var(--color-border-default);
+  --shadow-2: 0 4px 12px rgb(0 0 0 / 0.45);
+  --shadow-3: 0 12px 32px rgb(0 0 0 / 0.6);
+}
+/* tokens:end */
+
+/* ---------- non-color tokens (DESIGN_SYSTEM §4–§9) ---------- */
+:root {
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1rem;
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 0.875rem;
+  --text-base--line-height: 1.25rem;
+  --text-md: 1rem;
+  --text-md--line-height: 1.625rem;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.625rem;
+  --text-xl: 1.25rem;
+  --text-xl--line-height: 1.75rem;
+  --text-2xl: 1.5rem;
+  --text-2xl--line-height: 2rem;
+  --text-3xl: 1.875rem;
+  --text-3xl--line-height: 2.25rem;
+
+  --space-0_5: 2px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --radius-none: 0;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-full: 9999px;
+
+  --duration-instant: 0ms;
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --duration-slow: 260ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--color-focus-ring);
+
+  --z-sticky: 20;
+  --z-dropdown: 30;
+  --z-drawer: 40;
+  --z-dialog: 50;
+  --z-toast: 60;
+
+  --header-height: 48px;
+  --sticky-offset: 56px;
+
+  --control-height: 36px;
+  --row-height: 40px;
+  --cell-px: 12px;
+  --cell-py: 8px;
+  --card-pad: 16px;
+}
+
+[data-density="compact"] {
+  --control-height: 32px;
+  --row-height: 32px;
+  --cell-px: 8px;
+  --cell-py: 4px;
+  --card-pad: 12px;
+}
+
+@media (pointer: coarse) {
+  :root,
+  [data-density="compact"] {
+    --control-height: 44px;
+    --row-height: 44px;
+    --cell-px: 12px;
+    --cell-py: 8px;
+    --card-pad: 16px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}

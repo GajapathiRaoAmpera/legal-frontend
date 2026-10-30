@@ -1,0 +1,213 @@
+@import "tailwindcss";
+/* unlayered, so these beat the self-referencing theme vars Tailwind emits in @layer theme */
+@import "./tokens.css";
+
+@theme inline {
+  --color-*: initial; /* delete Tailwind's default palette: bg-red-500 etc. do not exist */
+  --color-canvas: var(--color-bg-canvas);
+  --color-surface: var(--color-bg-surface);
+  --color-sunken: var(--color-bg-sunken);
+  --color-raised: var(--color-bg-raised);
+  --color-overlay: var(--color-bg-overlay);
+  --color-scrim: var(--color-scrim);
+  --color-fg: var(--color-fg-default);
+  --color-fg-muted: var(--color-fg-muted);
+  --color-fg-subtle: var(--color-fg-subtle);
+  --color-link: var(--color-fg-link);
+  --color-on-primary: var(--color-fg-on-primary);
+  --color-on-danger: var(--color-fg-on-danger);
+  --color-border: var(--color-border-default);
+  --color-border-strong: var(--color-border-strong);
+  --color-primary: var(--color-primary);
+  --color-primary-hover: var(--color-primary-hover);
+  --color-danger: var(--color-danger);
+  --color-ring: var(--color-focus-ring);
+  --color-risk-high: var(--color-risk-high-fg);
+  --color-risk-high-bg: var(--color-risk-high-bg);
+  --color-risk-high-mark: var(--color-risk-high-mark);
+  --color-risk-medium: var(--color-risk-medium-fg);
+  --color-risk-medium-bg: var(--color-risk-medium-bg);
+  --color-risk-medium-mark: var(--color-risk-medium-mark);
+  --color-risk-low: var(--color-risk-low-fg);
+  --color-risk-low-bg: var(--color-risk-low-bg);
+  --color-risk-low-mark: var(--color-risk-low-mark);
+  --color-ins: var(--color-diff-ins-fg);
+  --color-ins-bg: var(--color-diff-ins-bg);
+  --color-del: var(--color-diff-del-fg);
+  --color-del-bg: var(--color-diff-del-bg);
+  --color-match: var(--color-search-match-bg);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-sans: "IBM Plex Sans Variable", "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Source Serif 4 Variable", "Source Serif 4", ui-serif, Georgia, serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --shadow-1: var(--shadow-1);
+  --shadow-2: var(--shadow-2);
+  --shadow-3: var(--shadow-3);
+
+  --text-xs: var(--text-xs);
+  --text-xs--line-height: var(--text-xs--line-height);
+  --text-sm: var(--text-sm);
+  --text-sm--line-height: var(--text-sm--line-height);
+  --text-base: var(--text-base);
+  --text-base--line-height: var(--text-base--line-height);
+  --text-md: var(--text-md);
+  --text-md--line-height: var(--text-md--line-height);
+  --text-lg: var(--text-lg);
+  --text-lg--line-height: var(--text-lg--line-height);
+  --text-xl: var(--text-xl);
+  --text-xl--line-height: var(--text-xl--line-height);
+  --text-2xl: var(--text-2xl);
+  --text-2xl--line-height: var(--text-2xl--line-height);
+  --text-3xl: var(--text-3xl);
+  --text-3xl--line-height: var(--text-3xl--line-height);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+}
+
+@utility focus-ring-double {
+  &:focus-visible {
+    outline: none;
+    box-shadow:
+      0 0 0 2px var(--color-bg-canvas),
+      0 0 0 4px var(--color-focus-ring);
+  }
+}
+@utility h-control {
+  height: var(--control-height);
+}
+@utility min-h-control {
+  min-height: var(--control-height);
+}
+@utility w-control {
+  width: var(--control-height);
+}
+@utility h-row {
+  height: var(--row-height);
+}
+@utility p-card {
+  padding: var(--card-pad);
+}
+@utility cell {
+  padding: var(--cell-py) var(--cell-px);
+}
+@utility z-sticky {
+  z-index: var(--z-sticky);
+}
+@utility z-dropdown {
+  z-index: var(--z-dropdown);
+}
+@utility z-drawer {
+  z-index: var(--z-drawer);
+}
+@utility z-dialog {
+  z-index: var(--z-dialog);
+}
+@utility z-toast {
+  z-index: var(--z-toast);
+}
+@utility transition-fast {
+  transition-duration: var(--duration-fast);
+  transition-timing-function: var(--ease-standard);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    font-size: 100%;
+    background: var(--color-bg-canvas);
+    color: var(--color-fg-default);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+  }
+  :focus-visible {
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+  /* WCAG 2.5.8: minimum targets; 44px on coarse pointers */
+  @media (pointer: coarse) {
+    button,
+    a,
+    [role="button"],
+    input[type="checkbox"],
+    input[type="radio"],
+    select {
+      min-height: 44px;
+      min-width: 44px;
+    }
+  }
+  @media (forced-colors: active) {
+    mark {
+      outline: 1px solid CanvasText;
+    }
+  }
+  @media print {
+    :root {
+      color-scheme: light;
+    }
+    [data-print-hide] {
+      display: none !important;
+    }
+    * {
+      box-shadow: none !important;
+    }
+  }
+}
+
+/* Viewer marks (contract-viewer-ux §6). Tokens only. */
+@layer components {
+  .mark {
+    color: inherit;
+    border-radius: var(--radius-none);
+  }
+  .mark-none {
+    background: transparent;
+    border-bottom: 1px dashed var(--color-border-strong);
+  }
+  .mark-quote {
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
+  }
+  .mark-quote.mark-High {
+    text-decoration-color: var(--color-risk-high-fg);
+  }
+  .mark-quote.mark-Medium {
+    text-decoration-color: var(--color-risk-medium-fg);
+  }
+  .mark-quote.mark-Low {
+    text-decoration-color: var(--color-risk-low-fg);
+  }
+  .mark-active {
+    box-shadow: inset 0 -2px 0 var(--color-focus-ring);
+  }
+  .clause-flash {
+    animation: clause-flash 600ms var(--ease-standard);
+  }
+  @keyframes clause-flash {
+    from {
+      outline: 2px solid var(--color-focus-ring);
+    }
+    to {
+      outline: 2px solid transparent;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .clause-flash {
+      animation: none;
+      outline: 2px solid var(--color-focus-ring);
+    }
+  }
+}
