@@ -1,0 +1,2968 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Contract & Procurement Risk Reviewer API",
+    "version": "1.0.0",
+    "description": "HAND-AUTHORED snapshot mirroring legal-backend/docs/API_CONTRACT.md. Replace by running `pnpm gen:api` against the live backend."
+  },
+  "paths": {
+    "/api/v1/auth/dev-token": {
+      "post": {
+        "operationId": "dev_token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DevTokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DevTokenResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/me": {
+      "get": {
+        "operationId": "get_me",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Me"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contracts": {
+      "get": {
+        "operationId": "list_contracts",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 25,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ContractStatus"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_Contract_"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "upload_contract",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_upload_contract"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contract"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "413": {
+            "description": "Too large",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "Unsupported media type",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contracts/{contract_id}": {
+      "get": {
+        "operationId": "get_contract",
+        "parameters": [
+          {
+            "name": "contract_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Contract"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contracts/{contract_id}/text": {
+      "get": {
+        "operationId": "get_contract_text",
+        "parameters": [
+          {
+            "name": "contract_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContractText"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contracts/{contract_id}/clauses": {
+      "get": {
+        "operationId": "list_clauses",
+        "parameters": [
+          {
+            "name": "contract_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 200,
+              "minimum": 1,
+              "maximum": 500
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Page_ClauseWithRisk_"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contracts/{contract_id}/risk-report": {
+      "get": {
+        "operationId": "get_risk_report",
+        "parameters": [
+          {
+            "name": "contract_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RiskReport"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contracts/{contract_id}/redlines": {
+      "get": {
+        "operationId": "list_redlines",
+        "parameters": [
+          {
+            "name": "contract_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Redline"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/redlines/{redline_id}/accept": {
+      "post": {
+        "operationId": "accept_redline",
+        "parameters": [
+          {
+            "name": "redline_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Redline"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/redlines/{redline_id}/reject": {
+      "post": {
+        "operationId": "reject_redline",
+        "parameters": [
+          {
+            "name": "redline_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Redline"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/redlines/{redline_id}": {
+      "patch": {
+        "operationId": "edit_redline",
+        "parameters": [
+          {
+            "name": "redline_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RedlineEdit"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Redline"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/redlines/{redline_id}/comments": {
+      "post": {
+        "operationId": "add_comment",
+        "parameters": [
+          {
+            "name": "redline_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Comment"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contracts/{contract_id}/package": {
+      "get": {
+        "operationId": "get_package",
+        "parameters": [
+          {
+            "name": "contract_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewPackage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/packages/{package_id}/approvals": {
+      "get": {
+        "operationId": "list_approvals",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Approval"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_approval",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovalCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Approval"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/packages/{package_id}/resubmit": {
+      "post": {
+        "operationId": "resubmit_package",
+        "parameters": [
+          {
+            "name": "package_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewPackage"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contracts/{contract_id}/audit": {
+      "get": {
+        "operationId": "list_audit",
+        "parameters": [
+          {
+            "name": "contract_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditEvent"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/contracts/{contract_id}/export": {
+      "get": {
+        "operationId": "export_contract",
+        "parameters": [
+          {
+            "name": "contract_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ExportFormat"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Binary download (Content-Disposition carries the filename)",
+            "content": {
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/feedback": {
+      "post": {
+        "operationId": "create_feedback",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/playbook/positions": {
+      "get": {
+        "operationId": "list_positions",
+        "parameters": [
+          {
+            "name": "clause_type",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ClauseType"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlaybookPositionOut"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_position",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlaybookPositionIn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaybookVersion"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/playbook/positions/{position_id}": {
+      "patch": {
+        "operationId": "update_position",
+        "parameters": [
+          {
+            "name": "position_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PlaybookPositionPatch"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaybookVersion"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "delete_position",
+        "parameters": [
+          {
+            "name": "position_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaybookVersion"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/playbook/versions": {
+      "get": {
+        "operationId": "list_playbook_versions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PlaybookVersion"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/playbook/versions/{a}/diff/{b}": {
+      "get": {
+        "operationId": "diff_playbook_versions",
+        "parameters": [
+          {
+            "name": "a",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "b",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PlaybookDiff"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/eval/runs": {
+      "get": {
+        "operationId": "list_eval_runs",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EvalRun"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "start_eval_run",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EvalRunCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvalRun"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation error",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/eval/runs/{run_id}": {
+      "get": {
+        "operationId": "get_eval_run",
+        "parameters": [
+          {
+            "name": "run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EvalRun"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/problem+json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Problem"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ClauseType": {
+        "type": "string",
+        "enum": [
+          "liability",
+          "indemnity",
+          "termination",
+          "auto_renewal",
+          "payment",
+          "ip",
+          "confidentiality",
+          "data_protection",
+          "governing_law",
+          "other"
+        ]
+      },
+      "RiskLevel": {
+        "type": "string",
+        "enum": [
+          "High",
+          "Medium",
+          "Low"
+        ]
+      },
+      "ContractStatus": {
+        "type": "string",
+        "enum": [
+          "uploaded",
+          "parsing",
+          "analyzing",
+          "awaiting_lawyer",
+          "changes_requested",
+          "approved",
+          "rejected",
+          "failed"
+        ]
+      },
+      "RedlineStatus": {
+        "type": "string",
+        "enum": [
+          "proposed",
+          "accepted",
+          "rejected",
+          "edited"
+        ]
+      },
+      "ApprovalDecision": {
+        "type": "string",
+        "enum": [
+          "approve",
+          "request_changes",
+          "reject"
+        ]
+      },
+      "PlaybookPosition": {
+        "type": "string",
+        "enum": [
+          "preferred",
+          "fallback",
+          "unacceptable"
+        ]
+      },
+      "PackageStatus": {
+        "type": "string",
+        "enum": [
+          "draft",
+          "ready_for_lawyer",
+          "approved",
+          "changes_requested",
+          "rejected"
+        ]
+      },
+      "Role": {
+        "type": "string",
+        "enum": [
+          "reviewer",
+          "lawyer",
+          "admin"
+        ]
+      },
+      "ExportFormat": {
+        "type": "string",
+        "enum": [
+          "redlined_docx",
+          "clean_docx",
+          "side_by_side_pdf"
+        ]
+      },
+      "FeedbackKind": {
+        "type": "string",
+        "enum": [
+          "accept",
+          "reject",
+          "edit"
+        ]
+      },
+      "EvalKind": {
+        "type": "string",
+        "enum": [
+          "smoke",
+          "full"
+        ]
+      },
+      "DevUser": {
+        "type": "string",
+        "enum": [
+          "rita",
+          "larry",
+          "ada"
+        ]
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "instance": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "type",
+          "title",
+          "status"
+        ]
+      },
+      "Provenance": {
+        "type": "object",
+        "properties": {
+          "provider": {
+            "type": "string"
+          },
+          "model_id": {
+            "type": "string"
+          },
+          "prompt_id": {
+            "type": "string"
+          },
+          "prompt_version": {
+            "type": "string"
+          },
+          "playbook_version_hash": {
+            "type": "string"
+          },
+          "retrieved_chunk_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "langfuse_trace_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "provider",
+          "model_id",
+          "prompt_id",
+          "prompt_version",
+          "playbook_version_hash",
+          "retrieved_chunk_ids",
+          "langfuse_trace_id"
+        ]
+      },
+      "RiskCounts": {
+        "type": "object",
+        "properties": {
+          "High": {
+            "type": "integer"
+          },
+          "Medium": {
+            "type": "integer"
+          },
+          "Low": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "High",
+          "Medium",
+          "Low"
+        ]
+      },
+      "Contract": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "title": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "mime_type": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ContractStatus"
+          },
+          "uploaded_by": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "page_count": {
+            "type": "integer"
+          },
+          "current_version_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "risk_counts": {
+            "$ref": "#/components/schemas/RiskCounts"
+          },
+          "playbook_version_hash": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "filename",
+          "mime_type",
+          "status",
+          "uploaded_by",
+          "created_at",
+          "updated_at",
+          "page_count",
+          "current_version_id",
+          "risk_counts",
+          "playbook_version_hash"
+        ]
+      },
+      "Section": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "heading": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "start_offset": {
+            "type": "integer"
+          },
+          "end_offset": {
+            "type": "integer"
+          },
+          "order": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "heading",
+          "start_offset",
+          "end_offset",
+          "order"
+        ]
+      },
+      "ContractText": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string"
+          },
+          "sections": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Section"
+            }
+          }
+        },
+        "required": [
+          "text",
+          "sections"
+        ]
+      },
+      "Clause": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "contract_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "section_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "clause_type": {
+            "$ref": "#/components/schemas/ClauseType"
+          },
+          "heading": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "text": {
+            "type": "string"
+          },
+          "start_offset": {
+            "type": "integer"
+          },
+          "end_offset": {
+            "type": "integer"
+          },
+          "order": {
+            "type": "integer"
+          },
+          "needs_human": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "contract_id",
+          "section_id",
+          "clause_type",
+          "heading",
+          "text",
+          "start_offset",
+          "end_offset",
+          "order",
+          "needs_human"
+        ]
+      },
+      "RiskAssessment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "clause_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "level": {
+            "$ref": "#/components/schemas/RiskLevel"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "quoted_span": {
+            "type": "string"
+          },
+          "span_start": {
+            "type": "integer"
+          },
+          "span_end": {
+            "type": "integer"
+          },
+          "playbook_position_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "red_flags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/Provenance"
+          }
+        },
+        "required": [
+          "id",
+          "clause_id",
+          "level",
+          "score",
+          "rationale",
+          "quoted_span",
+          "span_start",
+          "span_end",
+          "playbook_position_id",
+          "red_flags",
+          "provenance"
+        ]
+      },
+      "ClauseWithRisk": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Clause"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "risk": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/RiskAssessment"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "risk"
+            ]
+          }
+        ]
+      },
+      "Page_Contract_": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Contract"
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "offset": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset"
+        ]
+      },
+      "Page_ClauseWithRisk_": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClauseWithRisk"
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "offset": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset"
+        ]
+      },
+      "HeatmapRow": {
+        "type": "object",
+        "properties": {
+          "clause_type": {
+            "$ref": "#/components/schemas/ClauseType"
+          },
+          "High": {
+            "type": "integer"
+          },
+          "Medium": {
+            "type": "integer"
+          },
+          "Low": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "clause_type",
+          "High",
+          "Medium",
+          "Low"
+        ]
+      },
+      "RiskReport": {
+        "type": "object",
+        "properties": {
+          "contract_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "counts": {
+            "$ref": "#/components/schemas/RiskCounts"
+          },
+          "heatmap": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HeatmapRow"
+            }
+          },
+          "executive_summary": {
+            "type": "string"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ClauseWithRisk"
+            }
+          }
+        },
+        "required": [
+          "contract_id",
+          "counts",
+          "heatmap",
+          "executive_summary",
+          "items"
+        ]
+      },
+      "NegotiationNote": {
+        "type": "object",
+        "properties": {
+          "issue": {
+            "type": "string"
+          },
+          "ask": {
+            "type": "string"
+          },
+          "fallback": {
+            "type": "string"
+          },
+          "walk_away": {
+            "type": "string"
+          },
+          "business_justification": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "issue",
+          "ask",
+          "fallback",
+          "walk_away",
+          "business_justification"
+        ]
+      },
+      "Comment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "author": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "author",
+          "body",
+          "created_at"
+        ]
+      },
+      "Redline": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "clause_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "original_text": {
+            "type": "string"
+          },
+          "proposed_text": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/RedlineStatus"
+          },
+          "edited_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "negotiation_note": {
+            "$ref": "#/components/schemas/NegotiationNote"
+          },
+          "comments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/Provenance"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "clause_id",
+          "original_text",
+          "proposed_text",
+          "status",
+          "edited_text",
+          "negotiation_note",
+          "comments",
+          "provenance",
+          "updated_at"
+        ]
+      },
+      "RedlineEdit": {
+        "type": "object",
+        "properties": {
+          "edited_text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "edited_text"
+        ]
+      },
+      "CommentCreate": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "ConsistencyIssue": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "clause_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        },
+        "required": [
+          "kind",
+          "message",
+          "clause_ids"
+        ]
+      },
+      "ReviewPackage": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "contract_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "$ref": "#/components/schemas/PackageStatus"
+          },
+          "consistency_issues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConsistencyIssue"
+            }
+          },
+          "executive_summary": {
+            "type": "string"
+          },
+          "approver_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "approved_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "contract_id",
+          "status",
+          "consistency_issues",
+          "executive_summary",
+          "approver_id",
+          "approved_at"
+        ]
+      },
+      "Approval": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "package_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "decision": {
+            "$ref": "#/components/schemas/ApprovalDecision"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "package_id",
+          "decision",
+          "comment",
+          "user_id",
+          "created_at"
+        ]
+      },
+      "ApprovalCreate": {
+        "type": "object",
+        "properties": {
+          "decision": {
+            "$ref": "#/components/schemas/ApprovalDecision"
+          },
+          "comment": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 4000
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "decision",
+          "comment"
+        ]
+      },
+      "AuditEvent": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "actor": {
+            "type": "string"
+          },
+          "action": {
+            "type": "string"
+          },
+          "entity_type": {
+            "type": "string"
+          },
+          "entity_id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "details": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "id",
+          "actor",
+          "action",
+          "entity_type",
+          "entity_id",
+          "created_at",
+          "details"
+        ]
+      },
+      "FeedbackCreate": {
+        "type": "object",
+        "properties": {
+          "redline_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/FeedbackKind"
+          },
+          "chosen_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "redline_id",
+          "kind",
+          "chosen_text"
+        ]
+      },
+      "PlaybookPositionOut": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "clause_type": {
+            "$ref": "#/components/schemas/ClauseType"
+          },
+          "position": {
+            "$ref": "#/components/schemas/PlaybookPosition"
+          },
+          "text": {
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "escalation": {
+            "type": "string"
+          },
+          "jurisdiction": {
+            "type": "string"
+          },
+          "version_hash": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "clause_type",
+          "position",
+          "text",
+          "rationale",
+          "escalation",
+          "jurisdiction",
+          "version_hash"
+        ]
+      },
+      "PlaybookPositionIn": {
+        "type": "object",
+        "properties": {
+          "clause_type": {
+            "$ref": "#/components/schemas/ClauseType"
+          },
+          "position": {
+            "$ref": "#/components/schemas/PlaybookPosition"
+          },
+          "text": {
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "escalation": {
+            "type": "string"
+          },
+          "jurisdiction": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "clause_type",
+          "position",
+          "text",
+          "rationale",
+          "escalation",
+          "jurisdiction"
+        ]
+      },
+      "PlaybookPositionPatch": {
+        "type": "object",
+        "properties": {
+          "position": {
+            "$ref": "#/components/schemas/PlaybookPosition"
+          },
+          "text": {
+            "type": "string"
+          },
+          "rationale": {
+            "type": "string"
+          },
+          "escalation": {
+            "type": "string"
+          },
+          "jurisdiction": {
+            "type": "string"
+          }
+        }
+      },
+      "PlaybookVersion": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "version": {
+            "type": "integer"
+          },
+          "content_hash": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "created_by": {
+            "type": "string"
+          },
+          "position_count": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "content_hash",
+          "created_at",
+          "created_by",
+          "position_count"
+        ]
+      },
+      "PlaybookChange": {
+        "type": "object",
+        "properties": {
+          "before": {
+            "$ref": "#/components/schemas/PlaybookPositionOut"
+          },
+          "after": {
+            "$ref": "#/components/schemas/PlaybookPositionOut"
+          }
+        },
+        "required": [
+          "before",
+          "after"
+        ]
+      },
+      "PlaybookDiff": {
+        "type": "object",
+        "properties": {
+          "added": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlaybookPositionOut"
+            }
+          },
+          "removed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlaybookPositionOut"
+            }
+          },
+          "changed": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PlaybookChange"
+            }
+          }
+        },
+        "required": [
+          "added",
+          "removed",
+          "changed"
+        ]
+      },
+      "EvalRun": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "$ref": "#/components/schemas/EvalKind"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "finished_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "metrics": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "thresholds": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "number"
+            }
+          },
+          "passed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "report_md": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "started_at",
+          "finished_at",
+          "status",
+          "metrics",
+          "thresholds",
+          "passed",
+          "report_md"
+        ]
+      },
+      "EvalRunCreate": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "$ref": "#/components/schemas/EvalKind"
+          }
+        },
+        "required": [
+          "kind"
+        ]
+      },
+      "Me": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Role"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "roles"
+        ]
+      },
+      "DevTokenRequest": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/DevUser"
+          }
+        },
+        "required": [
+          "user"
+        ]
+      },
+      "DevTokenResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/Me"
+          }
+        },
+        "required": [
+          "access_token",
+          "user"
+        ]
+      },
+      "Body_upload_contract": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "file"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearer": []
+    }
+  ]
+}

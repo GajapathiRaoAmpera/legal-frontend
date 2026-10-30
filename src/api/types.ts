@@ -1,0 +1,48 @@
+// The ONLY import site for API types (ADR-0002). If the backend renames a schema, fix the right-hand side here.
+import type { components, paths } from "./schema";
+
+type S = components["schemas"];
+
+export type { paths };
+export type ClauseType = S["ClauseType"];
+export type RiskLevel = S["RiskLevel"];
+export type ContractStatus = S["ContractStatus"];
+export type RedlineStatus = S["RedlineStatus"];
+export type ApprovalDecision = S["ApprovalDecision"];
+export type PlaybookPosition = S["PlaybookPosition"];
+export type PackageStatus = S["PackageStatus"];
+export type Role = S["Role"];
+export type ExportFormat = S["ExportFormat"];
+export type FeedbackKind = S["FeedbackKind"];
+export type EvalKind = S["EvalKind"];
+export type DevUser = S["DevUser"];
+export type Problem = S["Problem"];
+export type Provenance = S["Provenance"];
+export type RiskCounts = S["RiskCounts"];
+export type Contract = S["Contract"];
+export type Section = S["Section"];
+export type ContractText = S["ContractText"];
+export type Clause = S["Clause"];
+export type RiskAssessment = S["RiskAssessment"];
+export type ClauseWithRisk = S["ClauseWithRisk"];
+export type ContractPage = S["Page_Contract_"];
+export type ClausePage = S["Page_ClauseWithRisk_"];
+export type HeatmapRow = S["HeatmapRow"];
+export type RiskReport = S["RiskReport"];
+export type NegotiationNote = S["NegotiationNote"];
+export type Comment = S["Comment"];
+export type Redline = S["Redline"];
+export type ConsistencyIssue = S["ConsistencyIssue"];
+export type ReviewPackage = S["ReviewPackage"];
+export type Approval = S["Approval"];
+export type ApprovalCreate = S["ApprovalCreate"];
+export type AuditEvent = S["AuditEvent"];
+export type FeedbackCreate = S["FeedbackCreate"];
+export type PlaybookPositionOut = S["PlaybookPositionOut"];
+export type PlaybookPositionIn = S["PlaybookPositionIn"];
+export type PlaybookPositionPatch = S["PlaybookPositionPatch"];
+export type PlaybookVersion = S["PlaybookVersion"];
+export type PlaybookDiff = S["PlaybookDiff"];
+export type EvalRun = S["EvalRun"];
+export type Me = S["Me"];
+export type DevTokenResponse = S["DevTokenResponse"];
