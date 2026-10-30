@@ -72,6 +72,12 @@ export function Component() {
       },
       { replace: true },
     );
+  // pin the derived default into the URL, else deciding it (no longer "proposed") silently moves the selection
+  const pinned = params.get("redline");
+  useEffect(() => {
+    if (!pinned && selectedId) select(selectedId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- select is a fresh closure each render
+  }, [pinned, selectedId]);
   const step = (dir: 1 | -1) => {
     const i = list.findIndex((r) => r.id === selectedId);
     const next = list[i + dir];
