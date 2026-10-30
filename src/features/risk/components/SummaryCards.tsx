@@ -29,33 +29,31 @@ export function SummaryCards({
           const Icon = m.icon;
           return (
             <li key={l}>
-              <Link
-                to={`?level=${l}`}
-                className={card}
-                aria-label={`${m.label}: ${counts[l]} clauses. Show them.`}
-              >
+              <Link to={`?level=${l}`} className={card}>
                 <span
                   className={cn("inline-flex items-center gap-1.5 text-sm font-medium", m.cls.fg)}
                 >
                   <Icon aria-hidden="true" className="size-4" />
                   {m.label}
                 </span>
-                <span className="text-3xl font-semibold tabular-nums">{counts[l]}</span>
+                <span className="text-3xl font-semibold tabular-nums">
+                  {counts[l]}
+                  <span className="sr-only"> clauses. Show them.</span>
+                </span>
               </Link>
             </li>
           );
         })}
         <li>
-          <Link
-            to="?needs=1"
-            className={card}
-            aria-label={`Needs review: ${needsHuman} clauses. Show them.`}
-          >
+          <Link to="?needs=1" className={card}>
             <span className="inline-flex items-center gap-1.5 text-sm font-medium">
               <CircleHelp aria-hidden="true" className="size-4" />
               Needs review
             </span>
-            <span className="text-3xl font-semibold tabular-nums">{needsHuman}</span>
+            <span className="text-3xl font-semibold tabular-nums">
+              {needsHuman}
+              <span className="sr-only"> clauses. Show them.</span>
+            </span>
           </Link>
         </li>
       </ul>

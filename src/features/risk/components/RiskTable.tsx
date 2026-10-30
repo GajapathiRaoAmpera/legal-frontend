@@ -114,10 +114,13 @@ export function RiskTable({
                   <Link
                     to={`/contracts/${contractId}?clause=${c.id}`}
                     className="inline-flex h-7 items-center gap-1 rounded-md px-2 text-sm text-link underline"
-                    aria-label={`View ${c.heading ?? CLAUSE_TYPE_LABEL[c.clause_type]} in contract`}
                   >
                     <ExternalLink aria-hidden="true" className="size-3.5" />
-                    View in contract
+                    View{" "}
+                    <span className="sr-only">
+                      {c.heading ?? CLAUSE_TYPE_LABEL[c.clause_type]}
+                    </span>{" "}
+                    in contract
                   </Link>
                   {c.risk ? (
                     <Button
